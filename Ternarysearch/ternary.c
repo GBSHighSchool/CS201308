@@ -1,21 +1,29 @@
+#include<stdio.h>
 
-double f(double a);
 
+// 우리가 최대값을 찾고 싶어하는 함수
+double f(double x);
 
-// [left, right] 구간내에서 함수 f(x)가 최대인 x를 구한다.
-double ternarySearch(int left, int right, function& f)
-{
-	// 적당히 큰 수만큼 반복 -> 오차범위는 (right-left)*(2/3)^(반복횟수)
-	for (int i = 0; i < 1000; i++) {
-		double a = (left*2 + right) / 3;
-		double b = (left + right*2) / 3;
-
-		// 최소인 점을 찾으려면 if 문의 부호를 반대로 하면 된다.
-		if (f(a) < f(b))
-			left = a;
-		else 
-			right = b;
+// [lo,hi] 구간에서 f(x) 가 최대값을 갖는 x 를 반환한다
+double ternary(double lo, double hi) {
+	int iter;
+	for(iter = 0; iter < 100; iter++) {
+		double a = (2*lo + hi) / 3.0;
+		double b = (lo + 2*hi) / 3.0;
+		if(f(a) > f(b))
+			hi = b;
+		else
+			lo = a;
 	}
+	return (lo+hi) / 2.0;
+}
+
+double f(double x) {
+	return -x*x+4*x-7;
+}
+
+int main() {
+	printf("%lf\n", ternary(-100,100));
 	
-	return (left+right)/2;
+	return 0;
 }
